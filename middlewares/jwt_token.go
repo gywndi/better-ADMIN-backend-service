@@ -39,6 +39,7 @@ func JwtToken() echo.MiddlewareFunc {
 
 			req := c.Request()
 			req = req.WithContext(helpers.ContextHelper().SetUserClaim(req.Context(), userClaim))
+			req = req.WithContext(helpers.ContextHelper().SetValidToken(req.Context()))
 			c.SetRequest(req)
 			return next(c)
 		}

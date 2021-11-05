@@ -13,6 +13,10 @@ func GORMDb(db *gorm.DB) echo.MiddlewareFunc {
 		return func(c echo.Context) error {
 			req := c.Request()
 			ctx := req.Context()
+			if !helpers.ContextHelper().IsValidToken(ctx) {
+				log.Error("Invalid token")
+				return next(c)
+			}
 
 			switch req.Method {
 			case "POST", "PUT", "DELETE", "PATCH":

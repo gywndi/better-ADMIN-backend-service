@@ -10,6 +10,7 @@ import (
 
 const ContextDBKey = "DB"
 const ContextUserClaimKey = "userClaim"
+const ContextValidTokenKey = "validToken"
 
 var (
 	contextHelperOnce     sync.Once
@@ -55,4 +56,16 @@ func (contextHelper) GetUserClaim(ctx context.Context) (*security.UserClaim, err
 		return userClaim, nil
 	}
 	return nil, errors.New("UserClaim is not exist")
+}
+
+func (contextHelper) SetValidToken(ctx context.Context) context.Context {
+	return context.WithValue(ctx, ContextValidTokenKey, true)
+}
+
+func (contextHelper) IsValidToken(ctx context.Context) bool {
+	v := ctx.Value(ContextValidTokenKey)
+	if v == nil{
+		return false
+	}
+	return ctx.Value(ContextValidTokenKey).(bool)
 }
